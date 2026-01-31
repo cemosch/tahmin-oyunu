@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+
+        <meta name="viewport" content="width, initial-scale=1.0">
+
+        <title>Sayı Tahmin Oyunu</title>
+        <style>
+            body {
+                background-color: #f2f2f2;
+                font-family: Arial, sans-serif;
+            }
+            .kutu {
+                widht: 300px;
+                margin: 100px auto;
+                text-align: center;
+
+                border: 2px solid black;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            }
+
+            input {
+                width: 100%;
+                padding: 8px;
+                margin-top: 10px;
+                font-size: 16;
+            }
+
+            button {
+               border: none;
+               border-radius: 6px;
+               background-color: #4caf50;
+               color:white;
+            }
+            
+            #sonuc {
+                margin-top: 15px;
+                font-size: 18px;
+                font-weight: bold;
+            }
+
+            #reset{
+                background-color: #555;
+            }
+            button:active {
+                transform: scale(0.97);
+            }
+            button {
+                cursor: pointer;
+                touch-action: manipulation;
+                padding: 15px 25px;
+            }
+
+            #sonuc {
+                transition: opacity 0.3s ease;
+            }
+        </style>   
+        </head>
+    <body>
+        <div class="kutu">
+            <h1>Sayı Tahmin Oyunu</h1>
+            <p>1 ile 10 arasında bir sayı tuttum</p>
+            <input type="number" id= "input" placeholder="Tahmini gir"/>
+            <button>Tahmin Et</button>
+            <button id="reset">Tekrar Oyna</button>
+            <p id="hak">Kalan Hak: 3</p>
+            <p id="sonuc"></p>
+        </div>
+<script>let tutulanSayi = Math.floor(Math.random() * 10) + 1;
+    let kalanHak = 3;
+    let button = document.querySelector("button");
+
+    let input = document.querySelector("#input");
+    let sonuc = document.querySelector("#sonuc");
+    let resetButon = document.querySelector("#reset");
+
+resetButon.addEventListener("click", function() {
+    tutulanSayi = Math.floor(Math.random() * 10) + 1;
+    input.value = "";
+    sonuc.innerText = "";
+});
+
+    button.addEventListener("pointerdown", function() {
+       input.blur();
+
+       if (input.value === ""){
+        sonuc.innerText = "Lütfen bir sayı gir";
+        sonuc.style.color= "red";
+        return;
+       }
+       kalanHak--;
+       document.querySelector("#hak").innerText = "Kalan Hak: " + kalanHak;
+        let kullaniciSayisi = parseInt(input.value);
+
+        if (kullaniciSayisi === tutulanSayi) {
+            sonuc.innerText = "Doğru tahmin!";
+            sonuc.style.color = "green";
+
+            input.value = "";
+            tutulanSayi= Math.floor(Math.random() * 10)+ 1;
+
+        } 
+        else if (kullaniciSayisi < tutulanSayi) {
+            sonuc.innerText = "Daha büyük bir sayı dene";
+            sonuc.style.color = "blue";
+        } 
+        else {
+            sonuc.innerText = "Daha küçük bir sayı dene";
+            sonuc.style.color = "blue";
+            
+        }
+        if (kalanHak === 0) {
+            sonuc.innerText = "Oyun bitti. :(";
+            sonuc.style.color = "red";
+            button.disabled = true;
+        }
+    });
+</script>
+    </body>
+</html>
