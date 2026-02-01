@@ -2,8 +2,8 @@
 <html>
     <head>
         <meta charset="UTF-8">
-
-        <meta name="viewport" content="width, initial-scale=1.0">
+        <link rel="stylesheet" href="style.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <title>Sayı Tahmin Oyunu</title>
         <style>
@@ -12,7 +12,7 @@
                 font-family: Arial, sans-serif;
             }
             .kutu {
-                widht: 300px;
+                width: 300px;
                 margin: 100px auto;
                 text-align: center;
 
@@ -26,7 +26,7 @@
                 width: 100%;
                 padding: 8px;
                 margin-top: 10px;
-                font-size: 16;
+                font-size: 16px;
             }
 
             button {
@@ -64,58 +64,79 @@
             <h1>Sayı Tahmin Oyunu</h1>
             <p>1 ile 10 arasında bir sayı tuttum</p>
             <input type="number" id= "input" placeholder="Tahmini gir"/>
-            <button>Tahmin Et</button>
-            <button id="reset">Tekrar Oyna</button>
+            <button id="tahmin">Tahmin Et</button>
+            <button id="reset" type="button">Tekrar Oyna</button>
             <p id="hak">Kalan Hak: 3</p>
             <p id="sonuc"></p>
         </div>
 <script>let tutulanSayi = Math.floor(Math.random() * 10) + 1;
     let kalanHak = 3;
-    let button = document.querySelector("button");
+    let button = document.querySelector("#tahmin");
 
     let input = document.querySelector("#input");
     let sonuc = document.querySelector("#sonuc");
     let resetButon = document.querySelector("#reset");
 
 resetButon.addEventListener("click", function() {
+    console.log("Resetlendi");
+    kalanHak = 3;
+    document.querySelector("#hak").innerText = "Kalan Hak: 3";
+
     tutulanSayi = Math.floor(Math.random() * 10) + 1;
-    input.value = "";
+
     sonuc.innerText = "";
+    input.value = "";
+    
+    button.disabled = false;
 });
 
-    button.addEventListener("pointerdown", function() {
+    button.addEventListener("click", function() {
        input.blur();
+
+       if (kalanHak <= 0) {
+        return;
+       }
 
        if (input.value === ""){
         sonuc.innerText = "Lütfen bir sayı gir";
         sonuc.style.color= "red";
         return;
        }
-       kalanHak--;
-       document.querySelector("#hak").innerText = "Kalan Hak: " + kalanHak;
+
+       
         let kullaniciSayisi = parseInt(input.value);
 
         if (kullaniciSayisi === tutulanSayi) {
-            sonuc.innerText = "Doğru tahmin!";
+            sonuc.innerText = "Doğru tahmin! Yeni oyun başladı.";
             sonuc.style.color = "green";
 
+            kalanHak = 3;
+            document.querySelector("#hak").innerText = "Kalan Hak: 3";
+            
+            tutulanSayi = Math.floor(Math.random() * 10) + 1;
             input.value = "";
-            tutulanSayi= Math.floor(Math.random() * 10)+ 1;
-
+          
+            return;
         } 
+
         else if (kullaniciSayisi < tutulanSayi) {
             sonuc.innerText = "Daha büyük bir sayı dene";
             sonuc.style.color = "blue";
+
+            kalanHak--;
         } 
         else {
             sonuc.innerText = "Daha küçük bir sayı dene";
             sonuc.style.color = "blue";
-            
+            kalanHak--;
         }
+        document.querySelector("#hak").innerText= "Kalan Hak: " + kalanHak;
+
         if (kalanHak === 0) {
             sonuc.innerText = "Oyun bitti. :(";
             sonuc.style.color = "red";
             button.disabled = true;
+            return;
         }
     });
 </script>
